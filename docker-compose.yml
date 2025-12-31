@@ -3,8 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    ports:
-      - "33005:3000"
+    network_mode: host
     environment:
       - NODE_ENV=production
     restart: always
