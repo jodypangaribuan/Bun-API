@@ -9,6 +9,5 @@ node_modules/
 .DS_Store
 
 # bun
-bun.lock
 .cursor/
 README.md
