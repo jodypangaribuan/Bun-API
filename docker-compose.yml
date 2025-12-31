@@ -2,13 +2,5 @@ services:
   api:
     build: .
     ports:
-      - "38801:3000"
+      - "8000:3000"
     restart: always
-    networks:
-      - bun_net
-
-networks:
-  bun_net:
-    driver: bridge
-    driver_opts:
-      com.docker.network.driver.mtu: 1400
