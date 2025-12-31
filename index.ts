@@ -6,7 +6,7 @@ setInterval(() => {
 }, 10000);
 
 const server = Bun.serve({
-    port: 4321, // Use a less common internal port
+    port: 3000, // Use a less common internal port
     hostname: "0.0.0.0",
     fetch(request) {
         const url = new URL(request.url);

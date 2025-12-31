@@ -11,5 +11,5 @@ COPY --from=install /temp/dev/node_modules node_modules
 COPY . .
 
 USER bun
-EXPOSE 4321/tcp
+EXPOSE 3000/tcp
 ENTRYPOINT [ "bun", "run", "index.ts" ]
