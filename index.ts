@@ -1,7 +1,7 @@
 console.log("Starting Bun server on port 8080...");
 
 const server = Bun.serve({
-    port: 8080,
+    port: 33002,
     hostname: "0.0.0.0",
     fetch(request) {
         const url = new URL(request.url);
