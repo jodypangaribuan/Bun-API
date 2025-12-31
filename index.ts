@@ -1,31 +1,41 @@
+console.log("Starting Bun server on port 8080...");
+
 const server = Bun.serve({
     port: 8080,
     hostname: "0.0.0.0",
     fetch(request) {
         const url = new URL(request.url);
-        console.log(`[${new Date().toISOString()}] Incoming ${request.method} to ${url.pathname}`);
+        console.log(`>>> [${new Date().toISOString()}] ${request.method} ${url.pathname}${url.search}`);
 
-        // Simple routing
-        if (url.pathname === "/") {
-            return new Response("Welcome to the Bun API! 🚀");
+        try {
+            // Simple routing
+            if (url.pathname === "/") {
+                return new Response("Welcome to the Bun API! 🚀\n");
+            }
+
+            if (url.pathname === "/api/health") {
+                return new Response(JSON.stringify({ status: "ok", timestamp: new Date().toISOString() }), {
+                    headers: { "Content-Type": "application/json" },
+                });
+            }
+
+            if (url.pathname === "/api/hello") {
+                const name = url.searchParams.get("name") || "World";
+                return new Response(JSON.stringify({ message: `Hello, ${name}!` }), {
+                    headers: { "Content-Type": "application/json" },
+                });
+            }
+
+            return new Response("Not Found", { status: 404 });
+        } catch (err) {
+            console.error("!!! ERROR handling request:", err);
+            return new Response("Internal Error", { status: 500 });
         }
-
-        if (url.pathname === "/api/health") {
-            return new Response(JSON.stringify({ status: "ok", timestamp: new Date().toISOString() }), {
-                headers: { "Content-Type": "application/json" },
-            });
-        }
-
-        if (url.pathname === "/api/hello") {
-            const name = url.searchParams.get("name") || "World";
-            return new Response(JSON.stringify({ message: `Hello, ${name}!` }), {
-                headers: { "Content-Type": "application/json" },
-            });
-        }
-
-        console.log(`[${new Date().toISOString()}] 404 Not Found: ${url.pathname}`);
-        return new Response("Not Found", { status: 404 });
+    },
+    error(error) {
+        console.error("!!! BUN SERVER ERROR:", error);
+        return new Response("Server Error", { status: 500 });
     },
 });
 
-console.log(`Bun API is running at http://localhost:${server.port}`);
+console.log(`Bun API is listening on ${server.hostname}:${server.port}`);
