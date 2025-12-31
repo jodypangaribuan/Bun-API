@@ -1,7 +1,9 @@
 const server = Bun.serve({
     port: 22222,
+    hostname: "0.0.0.0",
     fetch(request) {
         const url = new URL(request.url);
+        console.log(`[${new Date().toISOString()}] Incoming ${request.method} to ${url.pathname}`);
 
         // Simple routing
         if (url.pathname === "/") {
@@ -21,6 +23,7 @@ const server = Bun.serve({
             });
         }
 
+        console.log(`[${new Date().toISOString()}] 404 Not Found: ${url.pathname}`);
         return new Response("Not Found", { status: 404 });
     },
 });
