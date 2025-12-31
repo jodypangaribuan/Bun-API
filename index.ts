@@ -1,41 +1,30 @@
-console.log("Starting Bun server...");
+console.log("--- STARTING BUN APP ---");
+
+// Heartbeat to prove the process is alive
+setInterval(() => {
+    console.log(`[${new Date().toISOString()}] Heartbeat: Process is still alive`);
+}, 10000);
 
 const server = Bun.serve({
-    port: 3000,
+    port: 4321, // Use a less common internal port
     hostname: "0.0.0.0",
     fetch(request) {
         const url = new URL(request.url);
-        console.log(`>>> [${new Date().toISOString()}] ${request.method} ${url.pathname}${url.search}`);
+        console.log(`>>> [${new Date().toISOString()}] ${request.method} ${url.pathname}`);
 
         try {
-            // Simple routing
-            if (url.pathname === "/") {
-                return new Response("Welcome to the Bun API! 🚀\n");
-            }
-
+            if (url.pathname === "/") return new Response("Bun is Active 🚀\n");
             if (url.pathname === "/api/health") {
-                return new Response(JSON.stringify({ status: "ok", timestamp: new Date().toISOString() }), {
+                return new Response(JSON.stringify({ status: "ok", port: 33002 }), {
                     headers: { "Content-Type": "application/json" },
                 });
             }
-
-            if (url.pathname === "/api/hello") {
-                const name = url.searchParams.get("name") || "World";
-                return new Response(JSON.stringify({ message: `Hello, ${name}!` }), {
-                    headers: { "Content-Type": "application/json" },
-                });
-            }
-
             return new Response("Not Found", { status: 404 });
         } catch (err) {
-            console.error("!!! ERROR handling request:", err);
-            return new Response("Internal Error", { status: 500 });
+            console.error("!!! Error:", err);
+            return new Response("Error", { status: 500 });
         }
-    },
-    error(error) {
-        console.error("!!! BUN SERVER ERROR:", error);
-        return new Response("Server Error", { status: 500 });
     },
 });
 
-console.log(`Bun API is listening internally on ${server.hostname}:${server.port}`);
+console.log(`--- SERVER READY: Listening internally on ${server.port} ---`);
