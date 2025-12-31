@@ -1,7 +1,7 @@
-console.log("Starting Bun server on port 8080...");
+console.log("Starting Bun server...");
 
 const server = Bun.serve({
-    port: 33002,
+    port: 3000,
     hostname: "0.0.0.0",
     fetch(request) {
         const url = new URL(request.url);
@@ -38,4 +38,4 @@ const server = Bun.serve({
     },
 });
 
-console.log(`Bun API is listening on ${server.hostname}:${server.port}`);
+console.log(`Bun API is listening internally on ${server.hostname}:${server.port}`);

@@ -33,5 +33,5 @@ COPY --from=prerelease /usr/src/app/package.json .
 
 # run the app
 USER bun
-EXPOSE 33002/tcp
+EXPOSE 3000/tcp
 ENTRYPOINT [ "bun", "run", "index.ts" ]
